@@ -25,7 +25,7 @@
 //                4-byte checksum. Therefore code size cannot exceed 252 bytes.
 // ----------------------------------------------------------------------------
 
-#include "asm_helper.S"
+// #include "asm_helper.S"
 #include "addressmap.h"
 #include "ssi.h"
 #include "pads_qspi.h"
@@ -270,16 +270,18 @@ configure_ssi:
 // Bus accesses to the XIP window will now be transparently serviced by the
 // external flash on cache miss. We are ready to run code from flash.
 
-soft_reset:
-    // Jump to exit point provided in lr. Bootrom will pass null, in which
-    // case we use default exit target at a 256 byte offset into XIP region
-    // (immediately after this second stage's flash location)
+check_return:
     pop {r0}
     cmp r0, #0
-    bne 1f
-    ldr r0, =(XIP_BASE + 0x101)
-1:
+    beq vector_into_flash
     bx r0
+vector_into_flash:
+    ldr r0, =(XIP_BASE + 0x100)
+    ldr r1, =(PPB_BASE + M0PLUS_VTOR_OFFSET)
+    str r0, [r1]
+    ldmia r0, {r0, r1}
+    msr msp, r0
+    bx r1
 
 // Common functions
 
