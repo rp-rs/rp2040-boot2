@@ -11,6 +11,7 @@ fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
     let result_path = out_dir.as_ref().join("boot2.elf");
     let output = Command::new("arm-none-eabi-gcc")
         .arg("-nostartfiles")
+        .arg("-fPIC")
         .arg("--specs=nosys.specs")
         .arg(input_path.as_ref())
         .arg("-o")
