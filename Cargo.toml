@@ -1,6 +1,6 @@
 [package]
 name = "rp2040-boot2"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Jonathan 'theJPster' Pallant <github@thejpster.org.uk>"]
 edition = "2018"
 license = "BSD-3-Clause"

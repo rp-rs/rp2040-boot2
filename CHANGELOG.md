@@ -2,6 +2,10 @@
 
 ## Unreleased Changes
 
+## v0.1.2
+
+Added description to `Cargo.toml` that prevented publishing.
+
 ## v0.1.1
 
 Fixed typo in `Cargo.toml` that prevented publishing.
