@@ -1,7 +1,6 @@
 //! Compiles boot2 bootloader from assembler source
 //! Compiles the bootloader from assembly language source, and creates a binary file.
 
-use std::env;
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -69,14 +68,11 @@ fn calc_crc(data: &[u8]) -> u32 {
 }
 
 fn main() -> Result<(), String> {
-    let out_dir = env::var("OUT_DIR").unwrap();
+    let out_dir = "../rp2040-boot2-rs/src";
 
     let elf = make_elf("src/boot2_w25q080.S", &out_dir);
     let bin = make_bin(elf, &out_dir);
     let _padded_bin = make_padded_bin(bin, &out_dir);
-
-    println!("cargo:rerun-if-changed=./src/boot2_w25q080.S");
-    println!("cargo:rerun-if-changed=./build.rs");
 
     Ok(())
 }

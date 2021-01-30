@@ -10,6 +10,3 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-[build-dependencies]
-crc-any = "2.3"

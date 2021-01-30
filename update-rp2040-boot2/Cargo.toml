@@ -1,0 +1,10 @@
+[package]
+name = "update_boo2_bin"
+version = "0.1.0"
+authors = ["Jonathan Nilsson <jonathan@voysys.se>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+crc-any = "2.3"
