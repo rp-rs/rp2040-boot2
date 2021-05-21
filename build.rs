@@ -37,7 +37,7 @@ fn make_bin<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
         .expect("executing arm-none-eabi-objcopy");
     io::stderr().write_all(&output.stderr).unwrap();
     if !output.status.success() {
-        panic!(format!("asm compile failed: {:?}", output));
+        panic!("asm compile failed: {:?}", output);
     }
 
     result_path
@@ -70,12 +70,18 @@ fn calc_crc(data: &[u8]) -> u32 {
 
 fn main() -> Result<(), String> {
     let out_dir = env::var("OUT_DIR").unwrap();
-
-    let elf = make_elf("src/boot2_w25q080.S", &out_dir);
+    let target = if cfg!(feature = "ram_memcpy") {
+        "src/boot2_ram.S"
+      } else if cfg!(feature = "xip") {
+        "src/boot2_w25q080.S"
+      } else {
+        unreachable!()
+      };
+    let elf = make_elf(target, &out_dir);
     let bin = make_bin(elf, &out_dir);
     let _padded_bin = make_padded_bin(bin, &out_dir);
 
-    println!("cargo:rerun-if-changed=./src/boot2_w25q080.S");
+    println!("cargo:rerun-if-changed=./{}", target);
     println!("cargo:rerun-if-changed=./build.rs");
 
     Ok(())
