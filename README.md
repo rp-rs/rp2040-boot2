@@ -46,6 +46,18 @@ SECTIONS {
 } INSERT BEFORE .text;
 ```
 
+## Features
+
+For flash to RAM memcpy in boot2, you can specify the feature flag `ram_memcpy`, this will move all the contents from flash to RAM (up to RAM length). Using this strategy allows for faster execution and flash availability for persistent storage.
+
+Additionally, you need to change your linker script in order to specify the VMAs & LMAs for all the RAM sections, as in this example
+
+```
+    .text : {
+      ...
+    } > RAM AT > FLASH
+```
+
 ## Licence
 
 The assembly source is Copyright Raspberry Pi Trading and licensed under a BSD 3-clause licence. See source files for details.

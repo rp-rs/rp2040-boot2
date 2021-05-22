@@ -35,7 +35,8 @@
     (ADDR_L << 2)    |  /* Total number of address + mode bits */ \
     (0x0 << 0)          /* command and address both in serial format */
 
-.cpu cortex-m0
+
+.cpu cortex-m0plus
 .thumb
 
 .section .text
@@ -49,7 +50,7 @@
 .type _stage2_boot,%function
 .thumb_func
 _stage2_boot:
-    //b _stage2_boot // Wait for the debugger
+    //b . // Wait for the debugger
     push {lr}
     bl _enable_xip
     bl _do_memcpy44
