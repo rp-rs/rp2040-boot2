@@ -74,6 +74,8 @@ fn main() -> Result<(), String> {
         "src/boot2_ram.S"
       } else if cfg!(feature = "xip") {
         "src/boot2_w25q080.S"
+      } else if cfg!(feature = "at25sf128a") {
+        "src/boot2_at25sf128a.S"
       } else {
         unreachable!()
       };

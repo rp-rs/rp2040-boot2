@@ -13,6 +13,7 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 crc-any = "2.3"
 
 [features]
-default = ["xip"]
+default = ["at25sf128a"]
 xip = []
 ram_memcpy = []
+at25sf128a = []
