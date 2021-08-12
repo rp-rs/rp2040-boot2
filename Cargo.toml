@@ -16,3 +16,4 @@ crc-any = "2.3"
 default = ["xip"]
 xip = []
 ram_memcpy = []
+at25sf128a = []
