@@ -28,6 +28,15 @@ This will include support for the W25Q080 flash part on the Raspberry Pi Pico. I
 rp2040_boot2 = { version="0.1", features=["at25sf128a"] }
 ```
 
+As an alternative to setting features, you can pull a specific bootloader from this crate by name instead:
+
+
+```rust
+#[link_section = ".boot_loader"]
+#[used]
+pub static BOOT_LOADER: [u8; 256] = rp2040_boot2::BOOT_LOADER_W25Q080;
+```
+
 Finally, add to your application's `memory.x`:
 
 ```
