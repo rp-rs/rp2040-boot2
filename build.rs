@@ -7,13 +7,22 @@ use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+static SOURCE_FILES: &[&'static str] = &[
+    "src/boot2_at25sf128a.S",
+    "src/boot2_ram_memcpy.S",
+    "src/boot2_w25q080.S",
+];
+
 fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBuf {
-    let result_path = out_dir.as_ref().join("boot2.elf");
+    let input_path: &Path = input_path.as_ref();
+    let mut result_file = PathBuf::from(input_path.file_name().unwrap());
+    result_file.set_extension("elf");
+    let result_path = out_dir.as_ref().join(result_file);
     let output = Command::new("arm-none-eabi-gcc")
         .arg("-nostartfiles")
         .arg("-fPIC")
         .arg("--specs=nosys.specs")
-        .arg(input_path.as_ref())
+        .arg(input_path)
         .arg("-o")
         .arg(&result_path)
         .output()
@@ -27,11 +36,14 @@ fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
 }
 
 fn make_bin<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBuf {
-    let result_path = out_dir.as_ref().join("boot2.bin");
+    let input_path: &Path = input_path.as_ref();
+    let mut result_file = PathBuf::from(input_path.file_name().unwrap());
+    result_file.set_extension("bin");
+    let result_path = out_dir.as_ref().join(result_file);
     let output = Command::new("arm-none-eabi-objcopy")
         .arg("-O")
         .arg("binary")
-        .arg(input_path.as_ref())
+        .arg(input_path)
         .arg(&result_path)
         .output()
         .expect("executing arm-none-eabi-objcopy");
@@ -46,6 +58,7 @@ fn make_bin<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
 fn make_padded_bin<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) {
     const BOOT2_OUTPUT_LEN: usize = 256;
     const MAX_BOOT2_INPUT_LEN: usize = BOOT2_OUTPUT_LEN - 4;
+    let input_path: &Path = input_path.as_ref();
     let mut blob = fs::read(input_path).expect("reading compiled blob for padding");
     if blob.len() >= MAX_BOOT2_INPUT_LEN {
         panic!("boot2 blob is too long!")
@@ -58,7 +71,9 @@ fn make_padded_bin<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) {
     let crc_word = calc_crc(&blob);
     blob.extend(&crc_word.to_le_bytes());
 
-    let result_path = out_dir.as_ref().join("boot2_padded.bin");
+    let mut result_file = PathBuf::from(input_path.file_name().unwrap());
+    result_file.set_extension("padded.bin");
+    let result_path = out_dir.as_ref().join(result_file);
     fs::write(result_path, blob).expect("writing padded output file");
 }
 
@@ -70,20 +85,12 @@ fn calc_crc(data: &[u8]) -> u32 {
 
 fn main() -> Result<(), String> {
     let out_dir = env::var("OUT_DIR").unwrap();
-    let target = if cfg!(feature = "ram_memcpy") {
-        "src/boot2_ram.S"
-      } else if cfg!(feature = "xip") {
-        "src/boot2_w25q080.S"
-      } else if cfg!(feature = "at25sf128a") {
-        "src/boot2_at25sf128a.S"
-      } else {
-        unreachable!()
-      };
-    let elf = make_elf(target, &out_dir);
-    let bin = make_bin(elf, &out_dir);
-    let _padded_bin = make_padded_bin(bin, &out_dir);
-
-    println!("cargo:rerun-if-changed=./{}", target);
+    for asm_file in SOURCE_FILES.iter() {
+        let elf = make_elf(asm_file, &out_dir);
+        let bin = make_bin(elf, &out_dir);
+        let _padded_bin = make_padded_bin(bin, &out_dir);
+        println!("cargo:rerun-if-changed={}", asm_file);
+    }
     println!("cargo:rerun-if-changed=./build.rs");
 
     Ok(())

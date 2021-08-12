@@ -19,11 +19,16 @@ pub static BOOT_LOADER: [u8; 256] = rp2040_boot2::BOOT_LOADER;
 Add to your application's `Cargo.toml`:
 
 ```toml
-rp2040_boot2 = "*" # Latest from crates.io, or do
-rp2040_boot2 = { git = "https://github.com/rp-rs/rp2040_boot2", branch="main" } # Latest from github
+rp2040_boot2 = { version="0.1", features=["w25q080"] }
 ```
 
-And add to your application's `memory.x`:
+This will include support for the W25Q080 flash part on the Raspberry Pi Pico. If you have a board that uses the AT25SF128A (like the Arduino Nano Connect), you can instead use:
+
+```toml
+rp2040_boot2 = { version="0.1", features=["at25sf128a"] }
+```
+
+Finally, add to your application's `memory.x`:
 
 ```
 MEMORY
@@ -31,8 +36,9 @@ MEMORY
   /* NOTE 1 K = 1 KiBi = 1024 bytes */
   /* To suit Raspberry Pi RP2040 SoC */
   BOOT_LOADER : ORIGIN = 0x10000000, LENGTH = 0x100
+  /* Adjust this to suit the size of your specific flash chip */
   FLASH : ORIGIN = 0x10000100, LENGTH = 2048K - 0x100
-  RAM : ORIGIN = 0x20000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 264K
 }
 
 SECTIONS {
@@ -46,9 +52,9 @@ SECTIONS {
 } INSERT BEFORE .text;
 ```
 
-## Features
+## Booting from RAM
 
-For flash to RAM memcpy in boot2, you can specify the feature flag `ram_memcpy`, this will move all the contents from flash to RAM (up to RAM length). Using this strategy allows for faster execution and flash availability for persistent storage.
+If you want the bootloader to copy your application from flash to RAM before booting, you can specify the feature flag `ram_memcpy`, this will move all the contents from flash to RAM (up to RAM length). Using this strategy allows for faster execution and flash availability for persistent storage.
 
 Additionally, you need to change your linker script in order to specify the VMAs & LMAs for all the RAM sections, as in this example
 
@@ -60,7 +66,7 @@ Additionally, you need to change your linker script in order to specify the VMAs
 
 ## Licence
 
-The assembly source is Copyright Raspberry Pi Trading and licensed under a BSD 3-clause licence. See source files for details.
+Some of the assembly source files are Copyright Raspberry Pi Trading and licensed under a BSD 3-clause licence. See source files for details.
 
-The build.rs file is licensed as CC0.
+The remaining files in this crate are licensed as CC0.
 
