@@ -11,8 +11,3 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 
 [build-dependencies]
 crc-any = "2.3"
-
-[features]
-ram_memcpy = []
-at25sf128a = []
-w25q080 = []
