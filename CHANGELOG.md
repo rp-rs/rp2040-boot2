@@ -2,6 +2,9 @@
 
 ## Unreleased Changes
 
+* Added AT25SF128A support
+* Ensured all bootloaders are built on a `cargo build`
+
 ## v0.1.2
 
 Added description to `Cargo.toml` that prevented publishing.

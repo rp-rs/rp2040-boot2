@@ -123,7 +123,7 @@ _do_memcpy44:
     //uint8_t *_memcpy44(uint32_t *dest, uint32_t *src, uint32_t n)
     mov r3, r0
     ldr r0, =SRAM_BASE
-    ldr r1, =XIP_BASE+0x100 // Skip this shitty boot2
+    ldr r1, =XIP_BASE+0x100 // Skip this boot2 region
     ldr r2, =SRAM_END-SRAM_BASE
     blx r3
     

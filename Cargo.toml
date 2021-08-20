@@ -1,7 +1,7 @@
 [package]
 name = "rp2040-boot2"
 version = "0.1.2"
-authors = ["Jonathan 'theJPster' Pallant <github@thejpster.org.uk>", "Borja Garcia <debuti@gmail.com>"]
+authors = ["The rp-rs Team"]
 edition = "2018"
 license = "BSD-3-Clause"
 repository = "https://github.com/rp-rs/rp2040-boot2-rs"
@@ -11,9 +11,3 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 
 [build-dependencies]
 crc-any = "2.3"
-
-[features]
-default = ["xip"]
-xip = []
-ram_memcpy = []
-at25sf128a = []
