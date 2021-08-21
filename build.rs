@@ -11,6 +11,7 @@ static SOURCE_FILES: &[&'static str] = &[
     "src/boot2_at25sf128a.S",
     "src/boot2_ram_memcpy.S",
     "src/boot2_w25q080.S",
+    "src/boot2_gd25q64cs.S",
 ];
 
 fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBuf {
