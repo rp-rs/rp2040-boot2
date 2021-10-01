@@ -4,17 +4,25 @@
 
 set -euxo pipefail
 
+# We could just do `git diff --exit-code bin` but then all the feedback we get is
+# Binary files a/bin/boot2_gd25q64cs.padded.bin and b/bin/boot2_gd25q64cs.padded.bin differ
+# so lets dissassemble with objdump to get better feedback
+
+git checkout bin
+git clean -f bin
+
+cargo clean
+
 for lib in bin/*.bin; do
     filename=$(basename "$lib")
     arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.before"
 done
 
-cargo build --release
-# ./assemble.sh
+cargo build --features=assemble
 
 for lib in bin/*.bin; do
     filename=$(basename "$lib")
-    arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D > "bin/${filename%.bin}.after"
+    arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.after"
 done
 
 for cksum in bin/*.after; do
