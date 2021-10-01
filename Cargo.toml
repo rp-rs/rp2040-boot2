@@ -11,3 +11,7 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 
 [build-dependencies]
 crc-any = "2.3"
+
+[features]
+# Assemble the boot2 files. Requires GCC
+assemble = []
