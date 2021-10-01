@@ -85,11 +85,14 @@ fn calc_crc(data: &[u8]) -> u32 {
 }
 
 fn main() -> Result<(), String> {
+    // Store temporary build files here
     let out_dir = env::var("OUT_DIR").unwrap();
+    // And our final output here
+    let final_outdir = concat!(env!("CARGO_MANIFEST_DIR"), "/bin/");
     for asm_file in SOURCE_FILES.iter() {
         let elf = make_elf(asm_file, &out_dir);
         let bin = make_bin(elf, &out_dir);
-        let _padded_bin = make_padded_bin(bin, &out_dir);
+        let _padded_bin = make_padded_bin(bin, &final_outdir);
         println!("cargo:rerun-if-changed={}", asm_file);
     }
     println!("cargo:rerun-if-changed=./build.rs");
