@@ -113,6 +113,6 @@ fn main() -> Result<(), String> {
 
 #[cfg(not(feature = "assemble"))]
 fn main() -> Result<(), String> {
-    println!("cargo:warning=Not assembling boot2 files, re-run with features=assemble to do that (requires GNU toolchain)");
+    println!("cargo:warning=Using prebuilt boot2 files. use feature `assemble` to rebuild instead (requires GNU toolchain)");
     Ok(())
 }
