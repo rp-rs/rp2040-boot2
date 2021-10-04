@@ -15,14 +15,14 @@ cargo clean
 
 for lib in bin/*.bin; do
     filename=$(basename "$lib")
-    arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.before"
+    arm-none-eabi-objdump -b binary -m armv6-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.before"
 done
 
 cargo build --features=assemble
 
 for lib in bin/*.bin; do
     filename=$(basename "$lib")
-    arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.after"
+    arm-none-eabi-objdump -b binary -m armv6-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.after"
 done
 
 for disassembly in bin/*.after; do
