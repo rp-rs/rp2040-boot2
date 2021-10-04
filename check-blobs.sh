@@ -25,6 +25,6 @@ for lib in bin/*.bin; do
     arm-none-eabi-objdump -b binary -m armv6s-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.after"
 done
 
-for cksum in bin/*.after; do
-    diff -u "$cksum" "${cksum%.after}.before"
+for disassembly in bin/*.after; do
+    diff -u "$disassembly" "${disassembly%.after}.before"
 done
