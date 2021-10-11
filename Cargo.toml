@@ -1,6 +1,6 @@
 [package]
 name = "rp2040-boot2"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["The rp-rs Team"]
 edition = "2018"
 license = "BSD-3-Clause"
@@ -11,3 +11,7 @@ description = "Raspberry Pi RP2040 SoC second stage bootloader."
 
 [build-dependencies]
 crc-any = "2.3"
+
+[features]
+# Assemble the boot2 files. Requires GCC
+assemble = []
