@@ -10,7 +10,7 @@ puts the array exported by this crate at the start of your flash image (0x000 to
 Add to your application's `Cargo.toml`:
 
 ```toml
-rp2040_boot2 = { version="0.1" }
+rp2040_boot2 = { version = "0.2" }
 ```
 
 Add to your `main.rs`:
@@ -64,6 +64,22 @@ Additionally, you need to change your linker script in order to specify the VMAs
       ...
     } > RAM AT > FLASH
 ```
+
+## Adding or changing an existing bootloader
+
+In order to remove the need for GCC for users of this crate, we link against prebuilt versions of each of the bootloaders by default.
+
+If you wish to add or change an existing bootloader you should install GCC and build with the feature `assemble`
+
+```
+cargo build --features=assemble
+```
+
+To add a new bootloader to the build you need to add it to `SOURCE_FILES` in `build.rs` and add an entry for it in `lib.rs`
+
+Once you are done testing, add the padded binary file in the `bin` folder (example: `bin/boot2_w25q080.padded.bin`) to git
+
+You can run `check-blobs.sh` to verify that you have built your latest sources before making a Pull Request.
 
 ## Licence
 
