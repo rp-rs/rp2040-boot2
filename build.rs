@@ -18,6 +18,7 @@ static SOURCE_FILES: &[&'static str] = &[
     "src/boot2_ram_memcpy.S",
     "src/boot2_w25q080.S",
     "src/boot2_gd25q64cs.S",
+    "src/boot2_w25x10cl.S",
 ];
 
 #[cfg(feature = "assemble")]
