@@ -19,6 +19,7 @@ static SOURCE_FILES: &[&'static str] = &[
     "src/boot2_w25q080.S",
     "src/boot2_gd25q64cs.S",
     "src/boot2_w25x10cl.S",
+    "src/boot2_generic_03h.S",
 ];
 
 #[cfg(feature = "assemble")]
