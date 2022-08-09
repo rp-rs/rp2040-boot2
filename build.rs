@@ -18,6 +18,9 @@ static SOURCE_FILES: &[&'static str] = &[
     "src/boot2_ram_memcpy.S",
     "src/boot2_w25q080.S",
     "src/boot2_gd25q64cs.S",
+    "src/boot2_w25x10cl.S",
+    "src/boot2_generic_03h.S",
+    "src/boot2_is25lp080.S",
 ];
 
 #[cfg(feature = "assemble")]
@@ -30,6 +33,7 @@ fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
         .arg("-nostartfiles")
         .arg("-fPIC")
         .arg("--specs=nosys.specs")
+        .arg("-Isrc/include")
         .arg(input_path)
         .arg("-o")
         .arg(&result_path)
