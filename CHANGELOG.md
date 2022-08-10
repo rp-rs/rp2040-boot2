@@ -2,6 +2,8 @@
 
 ## Unreleased Changes
 
+## v0.2.1
+
 * Update boot2 code from SDK version 1.4.0
   (No changes to resulting binaries, but include structure is different)
 * Add more boot2 versions:
