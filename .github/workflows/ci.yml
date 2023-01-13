@@ -5,21 +5,12 @@ name: Continuous integration
 jobs:
   ci-linux:
     runs-on: ubuntu-20.04
-    continue-on-error: ${{ matrix.experimental || false }}
-    strategy:
-      matrix:
-        # All generated code should be running on stable now
-        rust: [stable]
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: ${{ matrix.rust }}
           target: thumbv6m-none-eabi
-          override: true
       - name: Install gcc
         run: sudo apt-get update && sudo apt-get install gcc-arm-none-eabi
-      - name: Run CI script for thumbv6m-none-eabi under ${{ matrix.rust }}
-        run: TARGET=thumbv6m-none-eabi TRAVIS_RUST_VERSION=${{ matrix.rust }} bash ./check-blobs.sh
+      - name: Run CI script for thumbv6m-none-eabi
+        run: bash ./check-blobs.sh
