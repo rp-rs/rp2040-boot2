@@ -2,6 +2,14 @@
 
 ## Unreleased Changes
 
+## v0.3.0
+
+* Set PICO_FLASH_SPI_CLKDIV=2 when building boot2
+
+This doubles the flash access speed to the value used by the C SDK by
+default. So it should usually be safe. However, if you are overclocking
+the RP2040, you might need to lower the flash speed accordingly.
+
 ## v0.2.1
 
 * Update boot2 code from SDK version 1.4.0
