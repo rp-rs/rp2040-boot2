@@ -34,6 +34,7 @@ fn make_elf<P: AsRef<Path>, Q: AsRef<Path>>(input_path: P, out_dir: Q) -> PathBu
         .arg("-fPIC")
         .arg("--specs=nosys.specs")
         .arg("-Isrc/include")
+        .arg("-DPICO_FLASH_SPI_CLKDIV=2")
         .arg(input_path)
         .arg("-o")
         .arg(&result_path)
