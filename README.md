@@ -72,7 +72,7 @@ In order to remove the need for GCC for users of this crate, we link against pre
 If you wish to add or change an existing bootloader you should install GCC and build with the feature `assemble`
 
 ```
-cargo build --features=assemble
+UPDATE_PRECOMPILED_BINARIES=true cargo build --features=assemble
 ```
 
 To add a new bootloader to the build you need to add it to `SOURCE_FILES` in `build.rs` and add an entry for it in `lib.rs`
