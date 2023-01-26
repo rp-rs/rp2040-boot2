@@ -18,7 +18,7 @@ for lib in bin/*.bin; do
     arm-none-eabi-objdump -b binary -m armv6-m -M force-thumb -D "$lib" > "bin/${filename%.bin}.before"
 done
 
-cargo build --features=assemble
+UPDATE_PRECOMPILED_BINARIES=true cargo build --features=assemble
 
 for lib in bin/*.bin; do
     filename=$(basename "$lib")
