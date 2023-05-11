@@ -10,7 +10,7 @@ puts the array exported by this crate at the start of your flash image (0x000 to
 Add to your application's `Cargo.toml`:
 
 ```toml
-rp2040_boot2 = { version = "0.2" }
+rp2040_boot2 = { version = "0.3" }
 ```
 
 Add to your `main.rs`:
