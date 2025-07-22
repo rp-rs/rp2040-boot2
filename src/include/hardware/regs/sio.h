@@ -1,5 +1,7 @@
+// THIS HEADER FILE IS AUTOMATICALLY GENERATED -- DO NOT EDIT
+
 /**
- * Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
+ * Copyright (c) 2024 Raspberry Pi Ltd.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,8 +13,8 @@
 //                  Provides core-local and inter-core hardware for the two
 //                  processors, with single-cycle access.
 // =============================================================================
-#ifndef HARDWARE_REGS_SIO_DEFINED
-#define HARDWARE_REGS_SIO_DEFINED
+#ifndef _HARDWARE_REGS_SIO_H
+#define _HARDWARE_REGS_SIO_H
 // =============================================================================
 // Register    : SIO_CPUID
 // Description : Processor core identifier
@@ -26,221 +28,609 @@
 #define SIO_CPUID_ACCESS "RO"
 // =============================================================================
 // Register    : SIO_GPIO_IN
-// Description : Input value for GPIO pins
-//               Input value for GPIO0...29
+// Description : Input value for GPIO0...31.
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               appear as zero.
 #define SIO_GPIO_IN_OFFSET _u(0x00000004)
-#define SIO_GPIO_IN_BITS   _u(0x3fffffff)
+#define SIO_GPIO_IN_BITS   _u(0xffffffff)
 #define SIO_GPIO_IN_RESET  _u(0x00000000)
-#define SIO_GPIO_IN_MSB    _u(29)
+#define SIO_GPIO_IN_MSB    _u(31)
 #define SIO_GPIO_IN_LSB    _u(0)
 #define SIO_GPIO_IN_ACCESS "RO"
 // =============================================================================
 // Register    : SIO_GPIO_HI_IN
-// Description : Input value for QSPI pins
-//               Input value on QSPI IO in order 0..5: SCLK, SSn, SD0, SD1, SD2,
-//               SD3
+// Description : Input value on GPIO32...47, QSPI IOs and USB pins
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               appear as zero.
 #define SIO_GPIO_HI_IN_OFFSET _u(0x00000008)
-#define SIO_GPIO_HI_IN_BITS   _u(0x0000003f)
+#define SIO_GPIO_HI_IN_BITS   _u(0xff00ffff)
 #define SIO_GPIO_HI_IN_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_IN_MSB    _u(5)
-#define SIO_GPIO_HI_IN_LSB    _u(0)
-#define SIO_GPIO_HI_IN_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_QSPI_SD
+// Description : Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+#define SIO_GPIO_HI_IN_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_IN_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_IN_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_IN_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_IN_QSPI_SD_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_QSPI_CSN
+// Description : Input value on QSPI CSn pin
+#define SIO_GPIO_HI_IN_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_IN_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_IN_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_IN_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_IN_QSPI_CSN_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_QSPI_SCK
+// Description : Input value on QSPI SCK pin
+#define SIO_GPIO_HI_IN_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_IN_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_IN_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_IN_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_IN_QSPI_SCK_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_USB_DM
+// Description : Input value on USB D- pin
+#define SIO_GPIO_HI_IN_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_IN_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_IN_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_IN_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_IN_USB_DM_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_USB_DP
+// Description : Input value on USB D+ pin
+#define SIO_GPIO_HI_IN_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_IN_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_IN_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_IN_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_IN_USB_DP_ACCESS "RO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_IN_GPIO
+// Description : Input value on GPIO32...47
+#define SIO_GPIO_HI_IN_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_IN_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_IN_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_IN_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_IN_GPIO_ACCESS "RO"
 // =============================================================================
 // Register    : SIO_GPIO_OUT
-// Description : GPIO output value
-//               Set output level (1/0 -> high/low) for GPIO0...29.
-//               Reading back gives the last value written, NOT the input value
-//               from the pins.
+// Description : GPIO0...31 output value
+//               Set output level (1/0 -> high/low) for GPIO0...31. Reading back
+//               gives the last value written, NOT the input value from the
+//               pins.
+//
 //               If core 0 and core 1 both write to GPIO_OUT simultaneously (or
-//               to a SET/CLR/XOR alias),
-//               the result is as though the write from core 0 took place first,
-//               and the write from core 1 was then applied to that intermediate
-//               result.
+//               to a SET/CLR/XOR alias), the result is as though the write from
+//               core 0 took place first, and the write from core 1 was then
+//               applied to that intermediate result.
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               ignore writes, and their output status reads back as zero. This
+//               is also true for SET/CLR/XOR aliases of this register.
 #define SIO_GPIO_OUT_OFFSET _u(0x00000010)
-#define SIO_GPIO_OUT_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OUT_BITS   _u(0xffffffff)
 #define SIO_GPIO_OUT_RESET  _u(0x00000000)
-#define SIO_GPIO_OUT_MSB    _u(29)
+#define SIO_GPIO_OUT_MSB    _u(31)
 #define SIO_GPIO_OUT_LSB    _u(0)
 #define SIO_GPIO_OUT_ACCESS "RW"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OUT
+// Description : Output value for GPIO32...47, QSPI IOs and USB pins.
+//
+//               Write to set output level (1/0 -> high/low). Reading back gives
+//               the last value written, NOT the input value from the pins. If
+//               core 0 and core 1 both write to GPIO_HI_OUT simultaneously (or
+//               to a SET/CLR/XOR alias), the result is as though the write from
+//               core 0 took place first, and the write from core 1 was then
+//               applied to that intermediate result.
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               ignore writes, and their output status reads back as zero. This
+//               is also true for SET/CLR/XOR aliases of this register.
+#define SIO_GPIO_HI_OUT_OFFSET _u(0x00000014)
+#define SIO_GPIO_HI_OUT_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OUT_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_QSPI_SD
+// Description : Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+#define SIO_GPIO_HI_OUT_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OUT_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OUT_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OUT_QSPI_SD_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_QSPI_CSN
+// Description : Output value for QSPI CSn pin
+#define SIO_GPIO_HI_OUT_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OUT_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OUT_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OUT_QSPI_CSN_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_QSPI_SCK
+// Description : Output value for QSPI SCK pin
+#define SIO_GPIO_HI_OUT_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OUT_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OUT_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OUT_QSPI_SCK_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_USB_DM
+// Description : Output value for USB D- pin
+#define SIO_GPIO_HI_OUT_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OUT_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OUT_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OUT_USB_DM_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_USB_DP
+// Description : Output value for USB D+ pin
+#define SIO_GPIO_HI_OUT_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OUT_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OUT_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OUT_USB_DP_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_GPIO
+// Description : Output value for GPIO32...47
+#define SIO_GPIO_HI_OUT_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OUT_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OUT_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OUT_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OUT_GPIO_ACCESS "RW"
+// =============================================================================
 // Register    : SIO_GPIO_OUT_SET
-// Description : GPIO output value set
+// Description : GPIO0...31 output value set
 //               Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
-#define SIO_GPIO_OUT_SET_OFFSET _u(0x00000014)
-#define SIO_GPIO_OUT_SET_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OUT_SET_OFFSET _u(0x00000018)
+#define SIO_GPIO_OUT_SET_BITS   _u(0xffffffff)
 #define SIO_GPIO_OUT_SET_RESET  _u(0x00000000)
-#define SIO_GPIO_OUT_SET_MSB    _u(29)
+#define SIO_GPIO_OUT_SET_MSB    _u(31)
 #define SIO_GPIO_OUT_SET_LSB    _u(0)
 #define SIO_GPIO_OUT_SET_ACCESS "WO"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OUT_SET
+// Description : Output value set for GPIO32..47, QSPI IOs and USB pins.
+//               Perform an atomic bit-set on GPIO_HI_OUT, i.e. `GPIO_HI_OUT |=
+//               wdata`
+#define SIO_GPIO_HI_OUT_SET_OFFSET _u(0x0000001c)
+#define SIO_GPIO_HI_OUT_SET_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OUT_SET_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_QSPI_SD
+#define SIO_GPIO_HI_OUT_SET_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_QSPI_CSN
+#define SIO_GPIO_HI_OUT_SET_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_SET_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OUT_SET_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OUT_SET_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OUT_SET_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_QSPI_SCK
+#define SIO_GPIO_HI_OUT_SET_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OUT_SET_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_USB_DM
+#define SIO_GPIO_HI_OUT_SET_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_SET_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OUT_SET_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OUT_SET_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OUT_SET_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_USB_DP
+#define SIO_GPIO_HI_OUT_SET_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_SET_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OUT_SET_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OUT_SET_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OUT_SET_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_SET_GPIO
+#define SIO_GPIO_HI_OUT_SET_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OUT_SET_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OUT_SET_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OUT_SET_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OUT_SET_GPIO_ACCESS "WO"
+// =============================================================================
 // Register    : SIO_GPIO_OUT_CLR
-// Description : GPIO output value clear
+// Description : GPIO0...31 output value clear
 //               Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &=
 //               ~wdata`
-#define SIO_GPIO_OUT_CLR_OFFSET _u(0x00000018)
-#define SIO_GPIO_OUT_CLR_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OUT_CLR_OFFSET _u(0x00000020)
+#define SIO_GPIO_OUT_CLR_BITS   _u(0xffffffff)
 #define SIO_GPIO_OUT_CLR_RESET  _u(0x00000000)
-#define SIO_GPIO_OUT_CLR_MSB    _u(29)
+#define SIO_GPIO_OUT_CLR_MSB    _u(31)
 #define SIO_GPIO_OUT_CLR_LSB    _u(0)
 #define SIO_GPIO_OUT_CLR_ACCESS "WO"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OUT_CLR
+// Description : Output value clear for GPIO32..47, QSPI IOs and USB pins.
+//               Perform an atomic bit-clear on GPIO_HI_OUT, i.e. `GPIO_HI_OUT
+//               &= ~wdata`
+#define SIO_GPIO_HI_OUT_CLR_OFFSET _u(0x00000024)
+#define SIO_GPIO_HI_OUT_CLR_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OUT_CLR_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_QSPI_SD
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_QSPI_CSN
+#define SIO_GPIO_HI_OUT_CLR_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_QSPI_SCK
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OUT_CLR_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_USB_DM
+#define SIO_GPIO_HI_OUT_CLR_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_CLR_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OUT_CLR_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OUT_CLR_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OUT_CLR_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_USB_DP
+#define SIO_GPIO_HI_OUT_CLR_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_CLR_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OUT_CLR_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OUT_CLR_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OUT_CLR_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_CLR_GPIO
+#define SIO_GPIO_HI_OUT_CLR_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OUT_CLR_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OUT_CLR_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OUT_CLR_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OUT_CLR_GPIO_ACCESS "WO"
+// =============================================================================
 // Register    : SIO_GPIO_OUT_XOR
-// Description : GPIO output value XOR
+// Description : GPIO0...31 output value XOR
 //               Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^=
 //               wdata`
-#define SIO_GPIO_OUT_XOR_OFFSET _u(0x0000001c)
-#define SIO_GPIO_OUT_XOR_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OUT_XOR_OFFSET _u(0x00000028)
+#define SIO_GPIO_OUT_XOR_BITS   _u(0xffffffff)
 #define SIO_GPIO_OUT_XOR_RESET  _u(0x00000000)
-#define SIO_GPIO_OUT_XOR_MSB    _u(29)
+#define SIO_GPIO_OUT_XOR_MSB    _u(31)
 #define SIO_GPIO_OUT_XOR_LSB    _u(0)
 #define SIO_GPIO_OUT_XOR_ACCESS "WO"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OUT_XOR
+// Description : Output value XOR for GPIO32..47, QSPI IOs and USB pins.
+//               Perform an atomic bitwise XOR on GPIO_HI_OUT, i.e. `GPIO_HI_OUT
+//               ^= wdata`
+#define SIO_GPIO_HI_OUT_XOR_OFFSET _u(0x0000002c)
+#define SIO_GPIO_HI_OUT_XOR_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OUT_XOR_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_QSPI_SD
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_QSPI_CSN
+#define SIO_GPIO_HI_OUT_XOR_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_QSPI_SCK
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OUT_XOR_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_USB_DM
+#define SIO_GPIO_HI_OUT_XOR_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_XOR_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OUT_XOR_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OUT_XOR_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OUT_XOR_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_USB_DP
+#define SIO_GPIO_HI_OUT_XOR_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OUT_XOR_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OUT_XOR_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OUT_XOR_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OUT_XOR_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OUT_XOR_GPIO
+#define SIO_GPIO_HI_OUT_XOR_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OUT_XOR_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OUT_XOR_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OUT_XOR_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OUT_XOR_GPIO_ACCESS "WO"
+// =============================================================================
 // Register    : SIO_GPIO_OE
-// Description : GPIO output enable
-//               Set output enable (1/0 -> output/input) for GPIO0...29.
-//               Reading back gives the last value written.
+// Description : GPIO0...31 output enable
+//               Set output enable (1/0 -> output/input) for GPIO0...31. Reading
+//               back gives the last value written.
+//
 //               If core 0 and core 1 both write to GPIO_OE simultaneously (or
-//               to a SET/CLR/XOR alias),
-//               the result is as though the write from core 0 took place first,
-//               and the write from core 1 was then applied to that intermediate
-//               result.
-#define SIO_GPIO_OE_OFFSET _u(0x00000020)
-#define SIO_GPIO_OE_BITS   _u(0x3fffffff)
+//               to a SET/CLR/XOR alias), the result is as though the write from
+//               core 0 took place first, and the write from core 1 was then
+//               applied to that intermediate result.
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               ignore writes, and their output status reads back as zero. This
+//               is also true for SET/CLR/XOR aliases of this register.
+#define SIO_GPIO_OE_OFFSET _u(0x00000030)
+#define SIO_GPIO_OE_BITS   _u(0xffffffff)
 #define SIO_GPIO_OE_RESET  _u(0x00000000)
-#define SIO_GPIO_OE_MSB    _u(29)
+#define SIO_GPIO_OE_MSB    _u(31)
 #define SIO_GPIO_OE_LSB    _u(0)
 #define SIO_GPIO_OE_ACCESS "RW"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OE
+// Description : Output enable value for GPIO32...47, QSPI IOs and USB pins.
+//
+//               Write output enable (1/0 -> output/input). Reading back gives
+//               the last value written. If core 0 and core 1 both write to
+//               GPIO_HI_OE simultaneously (or to a SET/CLR/XOR alias), the
+//               result is as though the write from core 0 took place first, and
+//               the write from core 1 was then applied to that intermediate
+//               result.
+//
+//               In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL)
+//               ignore writes, and their output status reads back as zero. This
+//               is also true for SET/CLR/XOR aliases of this register.
+#define SIO_GPIO_HI_OE_OFFSET _u(0x00000034)
+#define SIO_GPIO_HI_OE_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OE_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_QSPI_SD
+// Description : Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and
+//               SD3 pins
+#define SIO_GPIO_HI_OE_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OE_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OE_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OE_QSPI_SD_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_QSPI_CSN
+// Description : Output enable value for QSPI CSn pin
+#define SIO_GPIO_HI_OE_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OE_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OE_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OE_QSPI_CSN_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_QSPI_SCK
+// Description : Output enable value for QSPI SCK pin
+#define SIO_GPIO_HI_OE_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OE_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OE_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OE_QSPI_SCK_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_USB_DM
+// Description : Output enable value for USB D- pin
+#define SIO_GPIO_HI_OE_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OE_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OE_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OE_USB_DM_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_USB_DP
+// Description : Output enable value for USB D+ pin
+#define SIO_GPIO_HI_OE_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OE_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OE_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OE_USB_DP_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_GPIO
+// Description : Output enable value for GPIO32...47
+#define SIO_GPIO_HI_OE_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OE_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OE_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OE_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OE_GPIO_ACCESS "RW"
+// =============================================================================
 // Register    : SIO_GPIO_OE_SET
-// Description : GPIO output enable set
+// Description : GPIO0...31 output enable set
 //               Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
-#define SIO_GPIO_OE_SET_OFFSET _u(0x00000024)
-#define SIO_GPIO_OE_SET_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OE_SET_OFFSET _u(0x00000038)
+#define SIO_GPIO_OE_SET_BITS   _u(0xffffffff)
 #define SIO_GPIO_OE_SET_RESET  _u(0x00000000)
-#define SIO_GPIO_OE_SET_MSB    _u(29)
+#define SIO_GPIO_OE_SET_MSB    _u(31)
 #define SIO_GPIO_OE_SET_LSB    _u(0)
 #define SIO_GPIO_OE_SET_ACCESS "WO"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OE_SET
+// Description : Output enable set for GPIO32...47, QSPI IOs and USB pins.
+//               Perform an atomic bit-set on GPIO_HI_OE, i.e. `GPIO_HI_OE |=
+//               wdata`
+#define SIO_GPIO_HI_OE_SET_OFFSET _u(0x0000003c)
+#define SIO_GPIO_HI_OE_SET_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OE_SET_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_QSPI_SD
+#define SIO_GPIO_HI_OE_SET_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_SET_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OE_SET_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OE_SET_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OE_SET_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_QSPI_CSN
+#define SIO_GPIO_HI_OE_SET_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_SET_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OE_SET_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OE_SET_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OE_SET_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_QSPI_SCK
+#define SIO_GPIO_HI_OE_SET_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_SET_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OE_SET_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OE_SET_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OE_SET_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_USB_DM
+#define SIO_GPIO_HI_OE_SET_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_SET_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OE_SET_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OE_SET_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OE_SET_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_USB_DP
+#define SIO_GPIO_HI_OE_SET_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_SET_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OE_SET_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OE_SET_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OE_SET_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_SET_GPIO
+#define SIO_GPIO_HI_OE_SET_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OE_SET_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OE_SET_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OE_SET_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OE_SET_GPIO_ACCESS "WO"
+// =============================================================================
 // Register    : SIO_GPIO_OE_CLR
-// Description : GPIO output enable clear
+// Description : GPIO0...31 output enable clear
 //               Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &=
 //               ~wdata`
-#define SIO_GPIO_OE_CLR_OFFSET _u(0x00000028)
-#define SIO_GPIO_OE_CLR_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OE_CLR_OFFSET _u(0x00000040)
+#define SIO_GPIO_OE_CLR_BITS   _u(0xffffffff)
 #define SIO_GPIO_OE_CLR_RESET  _u(0x00000000)
-#define SIO_GPIO_OE_CLR_MSB    _u(29)
+#define SIO_GPIO_OE_CLR_MSB    _u(31)
 #define SIO_GPIO_OE_CLR_LSB    _u(0)
 #define SIO_GPIO_OE_CLR_ACCESS "WO"
 // =============================================================================
+// Register    : SIO_GPIO_HI_OE_CLR
+// Description : Output enable clear for GPIO32...47, QSPI IOs and USB pins.
+//               Perform an atomic bit-clear on GPIO_HI_OE, i.e. `GPIO_HI_OE &=
+//               ~wdata`
+#define SIO_GPIO_HI_OE_CLR_OFFSET _u(0x00000044)
+#define SIO_GPIO_HI_OE_CLR_BITS   _u(0xff00ffff)
+#define SIO_GPIO_HI_OE_CLR_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_QSPI_SD
+#define SIO_GPIO_HI_OE_CLR_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_QSPI_CSN
+#define SIO_GPIO_HI_OE_CLR_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_CLR_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OE_CLR_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OE_CLR_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OE_CLR_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_QSPI_SCK
+#define SIO_GPIO_HI_OE_CLR_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OE_CLR_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_USB_DM
+#define SIO_GPIO_HI_OE_CLR_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_CLR_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OE_CLR_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OE_CLR_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OE_CLR_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_USB_DP
+#define SIO_GPIO_HI_OE_CLR_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_CLR_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OE_CLR_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OE_CLR_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OE_CLR_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_CLR_GPIO
+#define SIO_GPIO_HI_OE_CLR_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OE_CLR_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OE_CLR_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OE_CLR_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OE_CLR_GPIO_ACCESS "WO"
+// =============================================================================
 // Register    : SIO_GPIO_OE_XOR
-// Description : GPIO output enable XOR
+// Description : GPIO0...31 output enable XOR
 //               Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^=
 //               wdata`
-#define SIO_GPIO_OE_XOR_OFFSET _u(0x0000002c)
-#define SIO_GPIO_OE_XOR_BITS   _u(0x3fffffff)
+#define SIO_GPIO_OE_XOR_OFFSET _u(0x00000048)
+#define SIO_GPIO_OE_XOR_BITS   _u(0xffffffff)
 #define SIO_GPIO_OE_XOR_RESET  _u(0x00000000)
-#define SIO_GPIO_OE_XOR_MSB    _u(29)
+#define SIO_GPIO_OE_XOR_MSB    _u(31)
 #define SIO_GPIO_OE_XOR_LSB    _u(0)
 #define SIO_GPIO_OE_XOR_ACCESS "WO"
 // =============================================================================
-// Register    : SIO_GPIO_HI_OUT
-// Description : QSPI output value
-//               Set output level (1/0 -> high/low) for QSPI IO0...5.
-//               Reading back gives the last value written, NOT the input value
-//               from the pins.
-//               If core 0 and core 1 both write to GPIO_HI_OUT simultaneously
-//               (or to a SET/CLR/XOR alias),
-//               the result is as though the write from core 0 took place first,
-//               and the write from core 1 was then applied to that intermediate
-//               result.
-#define SIO_GPIO_HI_OUT_OFFSET _u(0x00000030)
-#define SIO_GPIO_HI_OUT_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OUT_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OUT_MSB    _u(5)
-#define SIO_GPIO_HI_OUT_LSB    _u(0)
-#define SIO_GPIO_HI_OUT_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OUT_SET
-// Description : QSPI output value set
-//               Perform an atomic bit-set on GPIO_HI_OUT, i.e. `GPIO_HI_OUT |=
-//               wdata`
-#define SIO_GPIO_HI_OUT_SET_OFFSET _u(0x00000034)
-#define SIO_GPIO_HI_OUT_SET_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OUT_SET_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OUT_SET_MSB    _u(5)
-#define SIO_GPIO_HI_OUT_SET_LSB    _u(0)
-#define SIO_GPIO_HI_OUT_SET_ACCESS "WO"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OUT_CLR
-// Description : QSPI output value clear
-//               Perform an atomic bit-clear on GPIO_HI_OUT, i.e. `GPIO_HI_OUT
-//               &= ~wdata`
-#define SIO_GPIO_HI_OUT_CLR_OFFSET _u(0x00000038)
-#define SIO_GPIO_HI_OUT_CLR_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OUT_CLR_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OUT_CLR_MSB    _u(5)
-#define SIO_GPIO_HI_OUT_CLR_LSB    _u(0)
-#define SIO_GPIO_HI_OUT_CLR_ACCESS "WO"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OUT_XOR
-// Description : QSPI output value XOR
-//               Perform an atomic bitwise XOR on GPIO_HI_OUT, i.e. `GPIO_HI_OUT
-//               ^= wdata`
-#define SIO_GPIO_HI_OUT_XOR_OFFSET _u(0x0000003c)
-#define SIO_GPIO_HI_OUT_XOR_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OUT_XOR_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OUT_XOR_MSB    _u(5)
-#define SIO_GPIO_HI_OUT_XOR_LSB    _u(0)
-#define SIO_GPIO_HI_OUT_XOR_ACCESS "WO"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OE
-// Description : QSPI output enable
-//               Set output enable (1/0 -> output/input) for QSPI IO0...5.
-//               Reading back gives the last value written.
-//               If core 0 and core 1 both write to GPIO_HI_OE simultaneously
-//               (or to a SET/CLR/XOR alias),
-//               the result is as though the write from core 0 took place first,
-//               and the write from core 1 was then applied to that intermediate
-//               result.
-#define SIO_GPIO_HI_OE_OFFSET _u(0x00000040)
-#define SIO_GPIO_HI_OE_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OE_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OE_MSB    _u(5)
-#define SIO_GPIO_HI_OE_LSB    _u(0)
-#define SIO_GPIO_HI_OE_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OE_SET
-// Description : QSPI output enable set
-//               Perform an atomic bit-set on GPIO_HI_OE, i.e. `GPIO_HI_OE |=
-//               wdata`
-#define SIO_GPIO_HI_OE_SET_OFFSET _u(0x00000044)
-#define SIO_GPIO_HI_OE_SET_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OE_SET_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OE_SET_MSB    _u(5)
-#define SIO_GPIO_HI_OE_SET_LSB    _u(0)
-#define SIO_GPIO_HI_OE_SET_ACCESS "WO"
-// =============================================================================
-// Register    : SIO_GPIO_HI_OE_CLR
-// Description : QSPI output enable clear
-//               Perform an atomic bit-clear on GPIO_HI_OE, i.e. `GPIO_HI_OE &=
-//               ~wdata`
-#define SIO_GPIO_HI_OE_CLR_OFFSET _u(0x00000048)
-#define SIO_GPIO_HI_OE_CLR_BITS   _u(0x0000003f)
-#define SIO_GPIO_HI_OE_CLR_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OE_CLR_MSB    _u(5)
-#define SIO_GPIO_HI_OE_CLR_LSB    _u(0)
-#define SIO_GPIO_HI_OE_CLR_ACCESS "WO"
-// =============================================================================
 // Register    : SIO_GPIO_HI_OE_XOR
-// Description : QSPI output enable XOR
+// Description : Output enable XOR for GPIO32...47, QSPI IOs and USB pins.
 //               Perform an atomic bitwise XOR on GPIO_HI_OE, i.e. `GPIO_HI_OE
 //               ^= wdata`
 #define SIO_GPIO_HI_OE_XOR_OFFSET _u(0x0000004c)
-#define SIO_GPIO_HI_OE_XOR_BITS   _u(0x0000003f)
+#define SIO_GPIO_HI_OE_XOR_BITS   _u(0xff00ffff)
 #define SIO_GPIO_HI_OE_XOR_RESET  _u(0x00000000)
-#define SIO_GPIO_HI_OE_XOR_MSB    _u(5)
-#define SIO_GPIO_HI_OE_XOR_LSB    _u(0)
-#define SIO_GPIO_HI_OE_XOR_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_QSPI_SD
+#define SIO_GPIO_HI_OE_XOR_QSPI_SD_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SD_BITS   _u(0xf0000000)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SD_MSB    _u(31)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SD_LSB    _u(28)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SD_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_QSPI_CSN
+#define SIO_GPIO_HI_OE_XOR_QSPI_CSN_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_XOR_QSPI_CSN_BITS   _u(0x08000000)
+#define SIO_GPIO_HI_OE_XOR_QSPI_CSN_MSB    _u(27)
+#define SIO_GPIO_HI_OE_XOR_QSPI_CSN_LSB    _u(27)
+#define SIO_GPIO_HI_OE_XOR_QSPI_CSN_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_QSPI_SCK
+#define SIO_GPIO_HI_OE_XOR_QSPI_SCK_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SCK_BITS   _u(0x04000000)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SCK_MSB    _u(26)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SCK_LSB    _u(26)
+#define SIO_GPIO_HI_OE_XOR_QSPI_SCK_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_USB_DM
+#define SIO_GPIO_HI_OE_XOR_USB_DM_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_XOR_USB_DM_BITS   _u(0x02000000)
+#define SIO_GPIO_HI_OE_XOR_USB_DM_MSB    _u(25)
+#define SIO_GPIO_HI_OE_XOR_USB_DM_LSB    _u(25)
+#define SIO_GPIO_HI_OE_XOR_USB_DM_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_USB_DP
+#define SIO_GPIO_HI_OE_XOR_USB_DP_RESET  _u(0x0)
+#define SIO_GPIO_HI_OE_XOR_USB_DP_BITS   _u(0x01000000)
+#define SIO_GPIO_HI_OE_XOR_USB_DP_MSB    _u(24)
+#define SIO_GPIO_HI_OE_XOR_USB_DP_LSB    _u(24)
+#define SIO_GPIO_HI_OE_XOR_USB_DP_ACCESS "WO"
+// -----------------------------------------------------------------------------
+// Field       : SIO_GPIO_HI_OE_XOR_GPIO
+#define SIO_GPIO_HI_OE_XOR_GPIO_RESET  _u(0x0000)
+#define SIO_GPIO_HI_OE_XOR_GPIO_BITS   _u(0x0000ffff)
+#define SIO_GPIO_HI_OE_XOR_GPIO_MSB    _u(15)
+#define SIO_GPIO_HI_OE_XOR_GPIO_LSB    _u(0)
+#define SIO_GPIO_HI_OE_XOR_GPIO_ACCESS "WO"
 // =============================================================================
 // Register    : SIO_FIFO_ST
 // Description : Status register for inter-core FIFOs (mailboxes).
@@ -320,134 +710,6 @@
 #define SIO_SPINLOCK_ST_MSB    _u(31)
 #define SIO_SPINLOCK_ST_LSB    _u(0)
 #define SIO_SPINLOCK_ST_ACCESS "RO"
-// =============================================================================
-// Register    : SIO_DIV_UDIVIDEND
-// Description : Divider unsigned dividend
-//               Write to the DIVIDEND operand of the divider, i.e. the p in `p
-//               / q`.
-//               Any operand write starts a new calculation. The results appear
-//               in QUOTIENT, REMAINDER.
-//               UDIVIDEND/SDIVIDEND are aliases of the same internal register.
-//               The U alias starts an
-//               unsigned calculation, and the S alias starts a signed
-//               calculation.
-#define SIO_DIV_UDIVIDEND_OFFSET _u(0x00000060)
-#define SIO_DIV_UDIVIDEND_BITS   _u(0xffffffff)
-#define SIO_DIV_UDIVIDEND_RESET  _u(0x00000000)
-#define SIO_DIV_UDIVIDEND_MSB    _u(31)
-#define SIO_DIV_UDIVIDEND_LSB    _u(0)
-#define SIO_DIV_UDIVIDEND_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_UDIVISOR
-// Description : Divider unsigned divisor
-//               Write to the DIVISOR operand of the divider, i.e. the q in `p /
-//               q`.
-//               Any operand write starts a new calculation. The results appear
-//               in QUOTIENT, REMAINDER.
-//               UDIVISOR/SDIVISOR are aliases of the same internal register.
-//               The U alias starts an
-//               unsigned calculation, and the S alias starts a signed
-//               calculation.
-#define SIO_DIV_UDIVISOR_OFFSET _u(0x00000064)
-#define SIO_DIV_UDIVISOR_BITS   _u(0xffffffff)
-#define SIO_DIV_UDIVISOR_RESET  _u(0x00000000)
-#define SIO_DIV_UDIVISOR_MSB    _u(31)
-#define SIO_DIV_UDIVISOR_LSB    _u(0)
-#define SIO_DIV_UDIVISOR_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_SDIVIDEND
-// Description : Divider signed dividend
-//               The same as UDIVIDEND, but starts a signed calculation, rather
-//               than unsigned.
-#define SIO_DIV_SDIVIDEND_OFFSET _u(0x00000068)
-#define SIO_DIV_SDIVIDEND_BITS   _u(0xffffffff)
-#define SIO_DIV_SDIVIDEND_RESET  _u(0x00000000)
-#define SIO_DIV_SDIVIDEND_MSB    _u(31)
-#define SIO_DIV_SDIVIDEND_LSB    _u(0)
-#define SIO_DIV_SDIVIDEND_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_SDIVISOR
-// Description : Divider signed divisor
-//               The same as UDIVISOR, but starts a signed calculation, rather
-//               than unsigned.
-#define SIO_DIV_SDIVISOR_OFFSET _u(0x0000006c)
-#define SIO_DIV_SDIVISOR_BITS   _u(0xffffffff)
-#define SIO_DIV_SDIVISOR_RESET  _u(0x00000000)
-#define SIO_DIV_SDIVISOR_MSB    _u(31)
-#define SIO_DIV_SDIVISOR_LSB    _u(0)
-#define SIO_DIV_SDIVISOR_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_QUOTIENT
-// Description : Divider result quotient
-//               The result of `DIVIDEND / DIVISOR` (division). Contents
-//               undefined while CSR_READY is low.
-//               For signed calculations, QUOTIENT is negative when the signs of
-//               DIVIDEND and DIVISOR differ.
-//               This register can be written to directly, for context
-//               save/restore purposes. This halts any
-//               in-progress calculation and sets the CSR_READY and CSR_DIRTY
-//               flags.
-//               Reading from QUOTIENT clears the CSR_DIRTY flag, so should read
-//               results in the order
-//               REMAINDER, QUOTIENT if CSR_DIRTY is used.
-#define SIO_DIV_QUOTIENT_OFFSET _u(0x00000070)
-#define SIO_DIV_QUOTIENT_BITS   _u(0xffffffff)
-#define SIO_DIV_QUOTIENT_RESET  _u(0x00000000)
-#define SIO_DIV_QUOTIENT_MSB    _u(31)
-#define SIO_DIV_QUOTIENT_LSB    _u(0)
-#define SIO_DIV_QUOTIENT_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_REMAINDER
-// Description : Divider result remainder
-//               The result of `DIVIDEND % DIVISOR` (modulo). Contents undefined
-//               while CSR_READY is low.
-//               For signed calculations, REMAINDER is negative only when
-//               DIVIDEND is negative.
-//               This register can be written to directly, for context
-//               save/restore purposes. This halts any
-//               in-progress calculation and sets the CSR_READY and CSR_DIRTY
-//               flags.
-#define SIO_DIV_REMAINDER_OFFSET _u(0x00000074)
-#define SIO_DIV_REMAINDER_BITS   _u(0xffffffff)
-#define SIO_DIV_REMAINDER_RESET  _u(0x00000000)
-#define SIO_DIV_REMAINDER_MSB    _u(31)
-#define SIO_DIV_REMAINDER_LSB    _u(0)
-#define SIO_DIV_REMAINDER_ACCESS "RW"
-// =============================================================================
-// Register    : SIO_DIV_CSR
-// Description : Control and status register for divider.
-#define SIO_DIV_CSR_OFFSET _u(0x00000078)
-#define SIO_DIV_CSR_BITS   _u(0x00000003)
-#define SIO_DIV_CSR_RESET  _u(0x00000001)
-// -----------------------------------------------------------------------------
-// Field       : SIO_DIV_CSR_DIRTY
-// Description : Changes to 1 when any register is written, and back to 0 when
-//               QUOTIENT is read.
-//               Software can use this flag to make save/restore more efficient
-//               (skip if not DIRTY).
-//               If the flag is used in this way, it's recommended to either
-//               read QUOTIENT only,
-//               or REMAINDER and then QUOTIENT, to prevent data loss on context
-//               switch.
-#define SIO_DIV_CSR_DIRTY_RESET  _u(0x0)
-#define SIO_DIV_CSR_DIRTY_BITS   _u(0x00000002)
-#define SIO_DIV_CSR_DIRTY_MSB    _u(1)
-#define SIO_DIV_CSR_DIRTY_LSB    _u(1)
-#define SIO_DIV_CSR_DIRTY_ACCESS "RO"
-// -----------------------------------------------------------------------------
-// Field       : SIO_DIV_CSR_READY
-// Description : Reads as 0 when a calculation is in progress, 1 otherwise.
-//               Writing an operand (xDIVIDEND, xDIVISOR) will immediately start
-//               a new calculation, no
-//               matter if one is already in progress.
-//               Writing to a result register will immediately terminate any
-//               in-progress calculation
-//               and set the READY and DIRTY flags.
-#define SIO_DIV_CSR_READY_RESET  _u(0x1)
-#define SIO_DIV_CSR_READY_BITS   _u(0x00000001)
-#define SIO_DIV_CSR_READY_MSB    _u(0)
-#define SIO_DIV_CSR_READY_LSB    _u(0)
-#define SIO_DIV_CSR_READY_ACCESS "RO"
 // =============================================================================
 // Register    : SIO_INTERP0_ACCUM0
 // Description : Read/write access to accumulator 0
@@ -672,7 +934,9 @@
 #define SIO_INTERP0_CTRL_LANE0_MASK_LSB_ACCESS "RW"
 // -----------------------------------------------------------------------------
 // Field       : SIO_INTERP0_CTRL_LANE0_SHIFT
-// Description : Logical right-shift applied to accumulator before masking
+// Description : Right-rotate applied to accumulator before masking. By
+//               appropriately configuring the masks, left and right shifts can
+//               be synthesised.
 #define SIO_INTERP0_CTRL_LANE0_SHIFT_RESET  _u(0x00)
 #define SIO_INTERP0_CTRL_LANE0_SHIFT_BITS   _u(0x0000001f)
 #define SIO_INTERP0_CTRL_LANE0_SHIFT_MSB    _u(4)
@@ -757,7 +1021,9 @@
 #define SIO_INTERP0_CTRL_LANE1_MASK_LSB_ACCESS "RW"
 // -----------------------------------------------------------------------------
 // Field       : SIO_INTERP0_CTRL_LANE1_SHIFT
-// Description : Logical right-shift applied to accumulator before masking
+// Description : Right-rotate applied to accumulator before masking. By
+//               appropriately configuring the masks, left and right shifts can
+//               be synthesised.
 #define SIO_INTERP0_CTRL_LANE1_SHIFT_RESET  _u(0x00)
 #define SIO_INTERP0_CTRL_LANE1_SHIFT_BITS   _u(0x0000001f)
 #define SIO_INTERP0_CTRL_LANE1_SHIFT_MSB    _u(4)
@@ -1015,7 +1281,9 @@
 #define SIO_INTERP1_CTRL_LANE0_MASK_LSB_ACCESS "RW"
 // -----------------------------------------------------------------------------
 // Field       : SIO_INTERP1_CTRL_LANE0_SHIFT
-// Description : Logical right-shift applied to accumulator before masking
+// Description : Right-rotate applied to accumulator before masking. By
+//               appropriately configuring the masks, left and right shifts can
+//               be synthesised.
 #define SIO_INTERP1_CTRL_LANE0_SHIFT_RESET  _u(0x00)
 #define SIO_INTERP1_CTRL_LANE0_SHIFT_BITS   _u(0x0000001f)
 #define SIO_INTERP1_CTRL_LANE0_SHIFT_MSB    _u(4)
@@ -1100,7 +1368,9 @@
 #define SIO_INTERP1_CTRL_LANE1_MASK_LSB_ACCESS "RW"
 // -----------------------------------------------------------------------------
 // Field       : SIO_INTERP1_CTRL_LANE1_SHIFT
-// Description : Logical right-shift applied to accumulator before masking
+// Description : Right-rotate applied to accumulator before masking. By
+//               appropriately configuring the masks, left and right shifts can
+//               be synthesised.
 #define SIO_INTERP1_CTRL_LANE1_SHIFT_RESET  _u(0x00)
 #define SIO_INTERP1_CTRL_LANE1_SHIFT_BITS   _u(0x0000001f)
 #define SIO_INTERP1_CTRL_LANE1_SHIFT_MSB    _u(4)
@@ -1653,4 +1923,539 @@
 #define SIO_SPINLOCK31_LSB    _u(0)
 #define SIO_SPINLOCK31_ACCESS "RW"
 // =============================================================================
-#endif // HARDWARE_REGS_SIO_DEFINED
+// Register    : SIO_DOORBELL_OUT_SET
+// Description : Trigger a doorbell interrupt on the opposite core.
+//
+//               Write 1 to a bit to set the corresponding bit in DOORBELL_IN on
+//               the opposite core. This raises the opposite core's doorbell
+//               interrupt.
+//
+//               Read to get the status of the doorbells currently asserted on
+//               the opposite core. This is equivalent to that core reading its
+//               own DOORBELL_IN status.
+#define SIO_DOORBELL_OUT_SET_OFFSET _u(0x00000180)
+#define SIO_DOORBELL_OUT_SET_BITS   _u(0x000000ff)
+#define SIO_DOORBELL_OUT_SET_RESET  _u(0x00000000)
+#define SIO_DOORBELL_OUT_SET_MSB    _u(7)
+#define SIO_DOORBELL_OUT_SET_LSB    _u(0)
+#define SIO_DOORBELL_OUT_SET_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_DOORBELL_OUT_CLR
+// Description : Clear doorbells which have been posted to the opposite core.
+//               This register is intended for debugging and initialisation
+//               purposes.
+//
+//               Writing 1 to a bit in DOORBELL_OUT_CLR clears the corresponding
+//               bit in DOORBELL_IN on the opposite core. Clearing all bits will
+//               cause that core's doorbell interrupt to deassert. Since the
+//               usual order of events is for software to send events using
+//               DOORBELL_OUT_SET, and acknowledge incoming events by writing to
+//               DOORBELL_IN_CLR, this register should be used with caution to
+//               avoid race conditions.
+//
+//               Reading returns the status of the doorbells currently asserted
+//               on the other core, i.e. is equivalent to that core reading its
+//               own DOORBELL_IN status.
+#define SIO_DOORBELL_OUT_CLR_OFFSET _u(0x00000184)
+#define SIO_DOORBELL_OUT_CLR_BITS   _u(0x000000ff)
+#define SIO_DOORBELL_OUT_CLR_RESET  _u(0x00000000)
+#define SIO_DOORBELL_OUT_CLR_MSB    _u(7)
+#define SIO_DOORBELL_OUT_CLR_LSB    _u(0)
+#define SIO_DOORBELL_OUT_CLR_ACCESS "WC"
+// =============================================================================
+// Register    : SIO_DOORBELL_IN_SET
+// Description : Write 1s to trigger doorbell interrupts on this core. Read to
+//               get status of doorbells currently asserted on this core.
+#define SIO_DOORBELL_IN_SET_OFFSET _u(0x00000188)
+#define SIO_DOORBELL_IN_SET_BITS   _u(0x000000ff)
+#define SIO_DOORBELL_IN_SET_RESET  _u(0x00000000)
+#define SIO_DOORBELL_IN_SET_MSB    _u(7)
+#define SIO_DOORBELL_IN_SET_LSB    _u(0)
+#define SIO_DOORBELL_IN_SET_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_DOORBELL_IN_CLR
+// Description : Check and acknowledge doorbells posted to this core. This
+//               core's doorbell interrupt is asserted when any bit in this
+//               register is 1.
+//
+//               Write 1 to each bit to clear that bit. The doorbell interrupt
+//               deasserts once all bits are cleared. Read to get status of
+//               doorbells currently asserted on this core.
+#define SIO_DOORBELL_IN_CLR_OFFSET _u(0x0000018c)
+#define SIO_DOORBELL_IN_CLR_BITS   _u(0x000000ff)
+#define SIO_DOORBELL_IN_CLR_RESET  _u(0x00000000)
+#define SIO_DOORBELL_IN_CLR_MSB    _u(7)
+#define SIO_DOORBELL_IN_CLR_LSB    _u(0)
+#define SIO_DOORBELL_IN_CLR_ACCESS "WC"
+// =============================================================================
+// Register    : SIO_PERI_NONSEC
+// Description : Detach certain core-local peripherals from Secure SIO, and
+//               attach them to Non-secure SIO, so that Non-secure software can
+//               use them. Attempting to access one of these peripherals from
+//               the Secure SIO when it is attached to the Non-secure SIO, or
+//               vice versa, will generate a bus error.
+//
+//               This register is per-core, and is only present on the Secure
+//               SIO.
+//
+//               Most SIO hardware is duplicated across the Secure and Non-
+//               secure SIO, so is not listed in this register.
+#define SIO_PERI_NONSEC_OFFSET _u(0x00000190)
+#define SIO_PERI_NONSEC_BITS   _u(0x00000023)
+#define SIO_PERI_NONSEC_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_PERI_NONSEC_TMDS
+// Description : IF 1, detach TMDS encoder (of this core) from the Secure SIO,
+//               and attach to the Non-secure SIO.
+#define SIO_PERI_NONSEC_TMDS_RESET  _u(0x0)
+#define SIO_PERI_NONSEC_TMDS_BITS   _u(0x00000020)
+#define SIO_PERI_NONSEC_TMDS_MSB    _u(5)
+#define SIO_PERI_NONSEC_TMDS_LSB    _u(5)
+#define SIO_PERI_NONSEC_TMDS_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_PERI_NONSEC_INTERP1
+// Description : If 1, detach interpolator 1 (of this core) from the Secure SIO,
+//               and attach to the Non-secure SIO.
+#define SIO_PERI_NONSEC_INTERP1_RESET  _u(0x0)
+#define SIO_PERI_NONSEC_INTERP1_BITS   _u(0x00000002)
+#define SIO_PERI_NONSEC_INTERP1_MSB    _u(1)
+#define SIO_PERI_NONSEC_INTERP1_LSB    _u(1)
+#define SIO_PERI_NONSEC_INTERP1_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_PERI_NONSEC_INTERP0
+// Description : If 1, detach interpolator 0 (of this core) from the Secure SIO,
+//               and attach to the Non-secure SIO.
+#define SIO_PERI_NONSEC_INTERP0_RESET  _u(0x0)
+#define SIO_PERI_NONSEC_INTERP0_BITS   _u(0x00000001)
+#define SIO_PERI_NONSEC_INTERP0_MSB    _u(0)
+#define SIO_PERI_NONSEC_INTERP0_LSB    _u(0)
+#define SIO_PERI_NONSEC_INTERP0_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_RISCV_SOFTIRQ
+// Description : Control the assertion of the standard software interrupt
+//               (MIP.MSIP) on the RISC-V cores.
+//
+//               Unlike the RISC-V timer, this interrupt is not routed to a
+//               normal system-level interrupt line, so can not be used by the
+//               Arm cores.
+//
+//               It is safe for both cores to write to this register on the same
+//               cycle. The set/clear effect is accumulated across both cores,
+//               and then applied. If a flag is both set and cleared on the same
+//               cycle, only the set takes effect.
+#define SIO_RISCV_SOFTIRQ_OFFSET _u(0x000001a0)
+#define SIO_RISCV_SOFTIRQ_BITS   _u(0x00000303)
+#define SIO_RISCV_SOFTIRQ_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_RISCV_SOFTIRQ_CORE1_CLR
+// Description : Write 1 to atomically clear the core 1 software interrupt flag.
+//               Read to get the status of this flag.
+#define SIO_RISCV_SOFTIRQ_CORE1_CLR_RESET  _u(0x0)
+#define SIO_RISCV_SOFTIRQ_CORE1_CLR_BITS   _u(0x00000200)
+#define SIO_RISCV_SOFTIRQ_CORE1_CLR_MSB    _u(9)
+#define SIO_RISCV_SOFTIRQ_CORE1_CLR_LSB    _u(9)
+#define SIO_RISCV_SOFTIRQ_CORE1_CLR_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_RISCV_SOFTIRQ_CORE0_CLR
+// Description : Write 1 to atomically clear the core 0 software interrupt flag.
+//               Read to get the status of this flag.
+#define SIO_RISCV_SOFTIRQ_CORE0_CLR_RESET  _u(0x0)
+#define SIO_RISCV_SOFTIRQ_CORE0_CLR_BITS   _u(0x00000100)
+#define SIO_RISCV_SOFTIRQ_CORE0_CLR_MSB    _u(8)
+#define SIO_RISCV_SOFTIRQ_CORE0_CLR_LSB    _u(8)
+#define SIO_RISCV_SOFTIRQ_CORE0_CLR_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_RISCV_SOFTIRQ_CORE1_SET
+// Description : Write 1 to atomically set the core 1 software interrupt flag.
+//               Read to get the status of this flag.
+#define SIO_RISCV_SOFTIRQ_CORE1_SET_RESET  _u(0x0)
+#define SIO_RISCV_SOFTIRQ_CORE1_SET_BITS   _u(0x00000002)
+#define SIO_RISCV_SOFTIRQ_CORE1_SET_MSB    _u(1)
+#define SIO_RISCV_SOFTIRQ_CORE1_SET_LSB    _u(1)
+#define SIO_RISCV_SOFTIRQ_CORE1_SET_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_RISCV_SOFTIRQ_CORE0_SET
+// Description : Write 1 to atomically set the core 0 software interrupt flag.
+//               Read to get the status of this flag.
+#define SIO_RISCV_SOFTIRQ_CORE0_SET_RESET  _u(0x0)
+#define SIO_RISCV_SOFTIRQ_CORE0_SET_BITS   _u(0x00000001)
+#define SIO_RISCV_SOFTIRQ_CORE0_SET_MSB    _u(0)
+#define SIO_RISCV_SOFTIRQ_CORE0_SET_LSB    _u(0)
+#define SIO_RISCV_SOFTIRQ_CORE0_SET_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_MTIME_CTRL
+// Description : Control register for the RISC-V 64-bit Machine-mode timer. This
+//               timer is only present in the Secure SIO, so is only accessible
+//               to an Arm core in Secure mode or a RISC-V core in Machine mode.
+//
+//               Note whilst this timer follows the RISC-V privileged
+//               specification, it is equally usable by the Arm cores. The
+//               interrupts are routed to normal system-level interrupt lines as
+//               well as to the MIP.MTIP inputs on the RISC-V cores.
+#define SIO_MTIME_CTRL_OFFSET _u(0x000001a4)
+#define SIO_MTIME_CTRL_BITS   _u(0x0000000f)
+#define SIO_MTIME_CTRL_RESET  _u(0x0000000d)
+// -----------------------------------------------------------------------------
+// Field       : SIO_MTIME_CTRL_DBGPAUSE_CORE1
+// Description : If 1, the timer pauses when core 1 is in the debug halt state.
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE1_RESET  _u(0x1)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE1_BITS   _u(0x00000008)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE1_MSB    _u(3)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE1_LSB    _u(3)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE1_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_MTIME_CTRL_DBGPAUSE_CORE0
+// Description : If 1, the timer pauses when core 0 is in the debug halt state.
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE0_RESET  _u(0x1)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE0_BITS   _u(0x00000004)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE0_MSB    _u(2)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE0_LSB    _u(2)
+#define SIO_MTIME_CTRL_DBGPAUSE_CORE0_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_MTIME_CTRL_FULLSPEED
+// Description : If 1, increment the timer every cycle (i.e. run directly from
+//               the system clock), rather than incrementing on the system-level
+//               timer tick input.
+#define SIO_MTIME_CTRL_FULLSPEED_RESET  _u(0x0)
+#define SIO_MTIME_CTRL_FULLSPEED_BITS   _u(0x00000002)
+#define SIO_MTIME_CTRL_FULLSPEED_MSB    _u(1)
+#define SIO_MTIME_CTRL_FULLSPEED_LSB    _u(1)
+#define SIO_MTIME_CTRL_FULLSPEED_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_MTIME_CTRL_EN
+// Description : Timer enable bit. When 0, the timer will not increment
+//               automatically.
+#define SIO_MTIME_CTRL_EN_RESET  _u(0x1)
+#define SIO_MTIME_CTRL_EN_BITS   _u(0x00000001)
+#define SIO_MTIME_CTRL_EN_MSB    _u(0)
+#define SIO_MTIME_CTRL_EN_LSB    _u(0)
+#define SIO_MTIME_CTRL_EN_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_MTIME
+// Description : Read/write access to the high half of RISC-V Machine-mode
+//               timer. This register is shared between both cores. If both
+//               cores write on the same cycle, core 1 takes precedence.
+#define SIO_MTIME_OFFSET _u(0x000001b0)
+#define SIO_MTIME_BITS   _u(0xffffffff)
+#define SIO_MTIME_RESET  _u(0x00000000)
+#define SIO_MTIME_MSB    _u(31)
+#define SIO_MTIME_LSB    _u(0)
+#define SIO_MTIME_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_MTIMEH
+// Description : Read/write access to the high half of RISC-V Machine-mode
+//               timer. This register is shared between both cores. If both
+//               cores write on the same cycle, core 1 takes precedence.
+#define SIO_MTIMEH_OFFSET _u(0x000001b4)
+#define SIO_MTIMEH_BITS   _u(0xffffffff)
+#define SIO_MTIMEH_RESET  _u(0x00000000)
+#define SIO_MTIMEH_MSB    _u(31)
+#define SIO_MTIMEH_LSB    _u(0)
+#define SIO_MTIMEH_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_MTIMECMP
+// Description : Low half of RISC-V Machine-mode timer comparator. This register
+//               is core-local, i.e., each core gets a copy of this register,
+//               with the comparison result routed to its own interrupt line.
+//
+//               The timer interrupt is asserted whenever MTIME is greater than
+//               or equal to MTIMECMP. This comparison is unsigned, and
+//               performed on the full 64-bit values.
+#define SIO_MTIMECMP_OFFSET _u(0x000001b8)
+#define SIO_MTIMECMP_BITS   _u(0xffffffff)
+#define SIO_MTIMECMP_RESET  _u(0xffffffff)
+#define SIO_MTIMECMP_MSB    _u(31)
+#define SIO_MTIMECMP_LSB    _u(0)
+#define SIO_MTIMECMP_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_MTIMECMPH
+// Description : High half of RISC-V Machine-mode timer comparator. This
+//               register is core-local.
+//
+//               The timer interrupt is asserted whenever MTIME is greater than
+//               or equal to MTIMECMP. This comparison is unsigned, and
+//               performed on the full 64-bit values.
+#define SIO_MTIMECMPH_OFFSET _u(0x000001bc)
+#define SIO_MTIMECMPH_BITS   _u(0xffffffff)
+#define SIO_MTIMECMPH_RESET  _u(0xffffffff)
+#define SIO_MTIMECMPH_MSB    _u(31)
+#define SIO_MTIMECMPH_LSB    _u(0)
+#define SIO_MTIMECMPH_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_TMDS_CTRL
+// Description : Control register for TMDS encoder.
+#define SIO_TMDS_CTRL_OFFSET _u(0x000001c0)
+#define SIO_TMDS_CTRL_BITS   _u(0x1f9fffff)
+#define SIO_TMDS_CTRL_RESET  _u(0x00000000)
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_CLEAR_BALANCE
+// Description : Clear the running DC balance state of the TMDS encoders. This
+//               bit should be written once at the beginning of each scanline.
+#define SIO_TMDS_CTRL_CLEAR_BALANCE_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_CLEAR_BALANCE_BITS   _u(0x10000000)
+#define SIO_TMDS_CTRL_CLEAR_BALANCE_MSB    _u(28)
+#define SIO_TMDS_CTRL_CLEAR_BALANCE_LSB    _u(28)
+#define SIO_TMDS_CTRL_CLEAR_BALANCE_ACCESS "SC"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_PIX2_NOSHIFT
+// Description : When encoding two pixels's worth of symbols in one cycle (a
+//               read of a PEEK/POP_DOUBLE register), the second encoder sees a
+//               shifted version of the colour data register.
+//
+//               This control disables that shift, so that both encoder layers
+//               see the same pixel data. This is used for pixel doubling.
+#define SIO_TMDS_CTRL_PIX2_NOSHIFT_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_PIX2_NOSHIFT_BITS   _u(0x08000000)
+#define SIO_TMDS_CTRL_PIX2_NOSHIFT_MSB    _u(27)
+#define SIO_TMDS_CTRL_PIX2_NOSHIFT_LSB    _u(27)
+#define SIO_TMDS_CTRL_PIX2_NOSHIFT_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_PIX_SHIFT
+// Description : Shift applied to the colour data register with each read of a
+//               POP alias register.
+//
+//               Reading from the POP_SINGLE register, or reading from the
+//               POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling),
+//               shifts by the indicated amount.
+//
+//               Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear
+//               will shift by double the indicated amount. (Shift by 32 means
+//               no shift.)
+//               0x0 -> Do not shift the colour data register.
+//               0x1 -> Shift the colour data register by 1 bit
+//               0x2 -> Shift the colour data register by 2 bits
+//               0x3 -> Shift the colour data register by 4 bits
+//               0x4 -> Shift the colour data register by 8 bits
+//               0x5 -> Shift the colour data register by 16 bits
+#define SIO_TMDS_CTRL_PIX_SHIFT_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_PIX_SHIFT_BITS   _u(0x07000000)
+#define SIO_TMDS_CTRL_PIX_SHIFT_MSB    _u(26)
+#define SIO_TMDS_CTRL_PIX_SHIFT_LSB    _u(24)
+#define SIO_TMDS_CTRL_PIX_SHIFT_ACCESS "RW"
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_0 _u(0x0)
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_1 _u(0x1)
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_2 _u(0x2)
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_4 _u(0x3)
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_8 _u(0x4)
+#define SIO_TMDS_CTRL_PIX_SHIFT_VALUE_16 _u(0x5)
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_INTERLEAVE
+// Description : Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+//
+//               When interleaving is disabled, each of the 3 symbols appears as
+//               a contiguous 10-bit field, with lane 0 being the least-
+//               significant and starting at bit 0 of the register.
+//
+//               When interleaving is enabled, the symbols are packed into 5
+//               chunks of 3 lanes times 2 bits (30 bits total). Each chunk
+//               contains two bits of a TMDS symbol per lane, with lane 0 being
+//               the least significant.
+#define SIO_TMDS_CTRL_INTERLEAVE_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_INTERLEAVE_BITS   _u(0x00800000)
+#define SIO_TMDS_CTRL_INTERLEAVE_MSB    _u(23)
+#define SIO_TMDS_CTRL_INTERLEAVE_LSB    _u(23)
+#define SIO_TMDS_CTRL_INTERLEAVE_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L2_NBITS
+// Description : Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0
+//               through 7). Remaining LSBs are masked to 0 after the rotate.
+#define SIO_TMDS_CTRL_L2_NBITS_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L2_NBITS_BITS   _u(0x001c0000)
+#define SIO_TMDS_CTRL_L2_NBITS_MSB    _u(20)
+#define SIO_TMDS_CTRL_L2_NBITS_LSB    _u(18)
+#define SIO_TMDS_CTRL_L2_NBITS_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L1_NBITS
+// Description : Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0
+//               through 7). Remaining LSBs are masked to 0 after the rotate.
+#define SIO_TMDS_CTRL_L1_NBITS_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L1_NBITS_BITS   _u(0x00038000)
+#define SIO_TMDS_CTRL_L1_NBITS_MSB    _u(17)
+#define SIO_TMDS_CTRL_L1_NBITS_LSB    _u(15)
+#define SIO_TMDS_CTRL_L1_NBITS_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L0_NBITS
+// Description : Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0
+//               through 7). Remaining LSBs are masked to 0 after the rotate.
+#define SIO_TMDS_CTRL_L0_NBITS_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L0_NBITS_BITS   _u(0x00007000)
+#define SIO_TMDS_CTRL_L0_NBITS_MSB    _u(14)
+#define SIO_TMDS_CTRL_L0_NBITS_LSB    _u(12)
+#define SIO_TMDS_CTRL_L0_NBITS_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L2_ROT
+// Description : Right-rotate the 16 LSBs of the colour accumulator by 0-15
+//               bits, in order to get the MSB of the lane 2 (red) colour data
+//               aligned with the MSB of the 8-bit encoder input.
+//
+//               For example, for RGB565 (red most significant), red is bits
+//               15:11, so should be right-rotated by 8 bits to align with bits
+//               7:3 of the encoder input.
+#define SIO_TMDS_CTRL_L2_ROT_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L2_ROT_BITS   _u(0x00000f00)
+#define SIO_TMDS_CTRL_L2_ROT_MSB    _u(11)
+#define SIO_TMDS_CTRL_L2_ROT_LSB    _u(8)
+#define SIO_TMDS_CTRL_L2_ROT_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L1_ROT
+// Description : Right-rotate the 16 LSBs of the colour accumulator by 0-15
+//               bits, in order to get the MSB of the lane 1 (green) colour data
+//               aligned with the MSB of the 8-bit encoder input.
+//
+//               For example, for RGB565, green is bits 10:5, so should be
+//               right-rotated by 3 bits to align with bits 7:2 of the encoder
+//               input.
+#define SIO_TMDS_CTRL_L1_ROT_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L1_ROT_BITS   _u(0x000000f0)
+#define SIO_TMDS_CTRL_L1_ROT_MSB    _u(7)
+#define SIO_TMDS_CTRL_L1_ROT_LSB    _u(4)
+#define SIO_TMDS_CTRL_L1_ROT_ACCESS "RW"
+// -----------------------------------------------------------------------------
+// Field       : SIO_TMDS_CTRL_L0_ROT
+// Description : Right-rotate the 16 LSBs of the colour accumulator by 0-15
+//               bits, in order to get the MSB of the lane 0 (blue) colour data
+//               aligned with the MSB of the 8-bit encoder input.
+//
+//               For example, for RGB565 (red most significant), blue is bits
+//               4:0, so should be right-rotated by 13 to align with bits 7:3 of
+//               the encoder input.
+#define SIO_TMDS_CTRL_L0_ROT_RESET  _u(0x0)
+#define SIO_TMDS_CTRL_L0_ROT_BITS   _u(0x0000000f)
+#define SIO_TMDS_CTRL_L0_ROT_MSB    _u(3)
+#define SIO_TMDS_CTRL_L0_ROT_LSB    _u(0)
+#define SIO_TMDS_CTRL_L0_ROT_ACCESS "RW"
+// =============================================================================
+// Register    : SIO_TMDS_WDATA
+// Description : Write-only access to the TMDS colour data register.
+#define SIO_TMDS_WDATA_OFFSET _u(0x000001c4)
+#define SIO_TMDS_WDATA_BITS   _u(0xffffffff)
+#define SIO_TMDS_WDATA_RESET  _u(0x00000000)
+#define SIO_TMDS_WDATA_MSB    _u(31)
+#define SIO_TMDS_WDATA_LSB    _u(0)
+#define SIO_TMDS_WDATA_ACCESS "WO"
+// =============================================================================
+// Register    : SIO_TMDS_PEEK_SINGLE
+// Description : Get the encoding of one pixel's worth of colour data, packed
+//               into a 32-bit value (3x10-bit symbols).
+//
+//               The PEEK alias does not shift the colour register when read,
+//               but still advances the running DC balance state of each
+//               encoder. This is useful for pixel doubling.
+#define SIO_TMDS_PEEK_SINGLE_OFFSET _u(0x000001c8)
+#define SIO_TMDS_PEEK_SINGLE_BITS   _u(0xffffffff)
+#define SIO_TMDS_PEEK_SINGLE_RESET  _u(0x00000000)
+#define SIO_TMDS_PEEK_SINGLE_MSB    _u(31)
+#define SIO_TMDS_PEEK_SINGLE_LSB    _u(0)
+#define SIO_TMDS_PEEK_SINGLE_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_POP_SINGLE
+// Description : Get the encoding of one pixel's worth of colour data, packed
+//               into a 32-bit value. The packing is 5 chunks of 3 lanes times 2
+//               bits (30 bits total). Each chunk contains two bits of a TMDS
+//               symbol per lane. This format is intended for shifting out with
+//               the HSTX peripheral on RP2350.
+//
+//               The POP alias shifts the colour register when read, as well as
+//               advancing the running DC balance state of each encoder.
+#define SIO_TMDS_POP_SINGLE_OFFSET _u(0x000001cc)
+#define SIO_TMDS_POP_SINGLE_BITS   _u(0xffffffff)
+#define SIO_TMDS_POP_SINGLE_RESET  _u(0x00000000)
+#define SIO_TMDS_POP_SINGLE_MSB    _u(31)
+#define SIO_TMDS_POP_SINGLE_LSB    _u(0)
+#define SIO_TMDS_POP_SINGLE_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_PEEK_DOUBLE_L0
+// Description : Get lane 0 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The PEEK alias does not shift the colour register when read,
+//               but still advances the lane 0 DC balance state. This is useful
+//               if all 3 lanes' worth of encode are to be read at once, rather
+//               than processing the entire scanline for one lane before moving
+//               to the next lane.
+#define SIO_TMDS_PEEK_DOUBLE_L0_OFFSET _u(0x000001d0)
+#define SIO_TMDS_PEEK_DOUBLE_L0_BITS   _u(0xffffffff)
+#define SIO_TMDS_PEEK_DOUBLE_L0_RESET  _u(0x00000000)
+#define SIO_TMDS_PEEK_DOUBLE_L0_MSB    _u(31)
+#define SIO_TMDS_PEEK_DOUBLE_L0_LSB    _u(0)
+#define SIO_TMDS_PEEK_DOUBLE_L0_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_POP_DOUBLE_L0
+// Description : Get lane 0 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The POP alias shifts the colour register when read, according
+//               to the values of PIX_SHIFT and PIX2_NOSHIFT.
+#define SIO_TMDS_POP_DOUBLE_L0_OFFSET _u(0x000001d4)
+#define SIO_TMDS_POP_DOUBLE_L0_BITS   _u(0xffffffff)
+#define SIO_TMDS_POP_DOUBLE_L0_RESET  _u(0x00000000)
+#define SIO_TMDS_POP_DOUBLE_L0_MSB    _u(31)
+#define SIO_TMDS_POP_DOUBLE_L0_LSB    _u(0)
+#define SIO_TMDS_POP_DOUBLE_L0_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_PEEK_DOUBLE_L1
+// Description : Get lane 1 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The PEEK alias does not shift the colour register when read,
+//               but still advances the lane 1 DC balance state. This is useful
+//               if all 3 lanes' worth of encode are to be read at once, rather
+//               than processing the entire scanline for one lane before moving
+//               to the next lane.
+#define SIO_TMDS_PEEK_DOUBLE_L1_OFFSET _u(0x000001d8)
+#define SIO_TMDS_PEEK_DOUBLE_L1_BITS   _u(0xffffffff)
+#define SIO_TMDS_PEEK_DOUBLE_L1_RESET  _u(0x00000000)
+#define SIO_TMDS_PEEK_DOUBLE_L1_MSB    _u(31)
+#define SIO_TMDS_PEEK_DOUBLE_L1_LSB    _u(0)
+#define SIO_TMDS_PEEK_DOUBLE_L1_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_POP_DOUBLE_L1
+// Description : Get lane 1 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The POP alias shifts the colour register when read, according
+//               to the values of PIX_SHIFT and PIX2_NOSHIFT.
+#define SIO_TMDS_POP_DOUBLE_L1_OFFSET _u(0x000001dc)
+#define SIO_TMDS_POP_DOUBLE_L1_BITS   _u(0xffffffff)
+#define SIO_TMDS_POP_DOUBLE_L1_RESET  _u(0x00000000)
+#define SIO_TMDS_POP_DOUBLE_L1_MSB    _u(31)
+#define SIO_TMDS_POP_DOUBLE_L1_LSB    _u(0)
+#define SIO_TMDS_POP_DOUBLE_L1_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_PEEK_DOUBLE_L2
+// Description : Get lane 2 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The PEEK alias does not shift the colour register when read,
+//               but still advances the lane 2 DC balance state. This is useful
+//               if all 3 lanes' worth of encode are to be read at once, rather
+//               than processing the entire scanline for one lane before moving
+//               to the next lane.
+#define SIO_TMDS_PEEK_DOUBLE_L2_OFFSET _u(0x000001e0)
+#define SIO_TMDS_PEEK_DOUBLE_L2_BITS   _u(0xffffffff)
+#define SIO_TMDS_PEEK_DOUBLE_L2_RESET  _u(0x00000000)
+#define SIO_TMDS_PEEK_DOUBLE_L2_MSB    _u(31)
+#define SIO_TMDS_PEEK_DOUBLE_L2_LSB    _u(0)
+#define SIO_TMDS_PEEK_DOUBLE_L2_ACCESS "RF"
+// =============================================================================
+// Register    : SIO_TMDS_POP_DOUBLE_L2
+// Description : Get lane 2 of the encoding of two pixels' worth of colour data.
+//               Two 10-bit TMDS symbols are packed at the bottom of a 32-bit
+//               word.
+//
+//               The POP alias shifts the colour register when read, according
+//               to the values of PIX_SHIFT and PIX2_NOSHIFT.
+#define SIO_TMDS_POP_DOUBLE_L2_OFFSET _u(0x000001e4)
+#define SIO_TMDS_POP_DOUBLE_L2_BITS   _u(0xffffffff)
+#define SIO_TMDS_POP_DOUBLE_L2_RESET  _u(0x00000000)
+#define SIO_TMDS_POP_DOUBLE_L2_MSB    _u(31)
+#define SIO_TMDS_POP_DOUBLE_L2_LSB    _u(0)
+#define SIO_TMDS_POP_DOUBLE_L2_ACCESS "RF"
+// =============================================================================
+#endif // _HARDWARE_REGS_SIO_H
+
